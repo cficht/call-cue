@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useParams } from 'react-router-dom';
-import { getRequest } from '../services/cue';
+import { getRequests } from '../services/cue';
 
 const useStyles = makeStyles(() => ({
-  req: {
+  all: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-evenly',
@@ -17,24 +16,21 @@ const useStyles = makeStyles(() => ({
     backgroundColor: 'lightgray',
     height: 400,
     width: '40%',
-    padding: '30px',
   }
 }));
 
-export const Detail = () => {
-  const [request, setRequest] = useState({})
-  const { id } = useParams();
+export default function All() {
+  const [allRequests, setAllRequests] = useState([]);
 
   useEffect(() => {
-    getRequest(id)
-      .then(res => setRequest(res.Item))
+    getRequests()
+      .then(res => setAllRequests(res.Items));
   }, [])
 
   const classes = useStyles();
 
-  const isId = () => {
-    if(request) return (
-      <>
+  const requestNodes = allRequests.map(request => { return (
+    <div className={classes.all}>
         <div>
           <h3>User: {request.CustomerName}</h3>
           <h3>IssueId: {request.IssueId}</h3>
@@ -42,20 +38,15 @@ export const Detail = () => {
           <h3>Description: {request.CustomerIssueDescription}</h3>
         </div> 
         <div>
-          <h3>Creation Date: {Date(request.CustomerIssueCreateDate)} </h3>
+          <h3>Creation Date: {new Date(Number(request.CustomerIssueCreateDate)).toLocaleString()} </h3>
         </div>
-      </>
-    ) 
-    else return (
-      <div>
-        <h3>Bad ID</h3>
-      </div>
-    )
-  }
+    </div>
+  )
+  })
 
   return (
-    <div className={classes.req}>
-      {isId()}
+    <div>
+      {requestNodes}
     </div>
   )
 }
