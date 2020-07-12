@@ -8,9 +8,9 @@ export default function Dashboard() {
 
   return (
     <div>
-      <Link to="request"><Button variant="contained" color="secondary">Make Request</Button></Link>
+      <Link to="/request"><Button variant="contained" color="secondary">Make Request</Button></Link>
       <TextField id="standard-basic" label="Request ID" value={requestId} name="name" onChange={(e) => setRequestId(e.target.value)}/>
-      <Link to={`detail/${requestId}`}><Button variant="contained" color="secondary">Check Request</Button></Link>
+      <Link to={requestId ? `/detail/${requestId}` : `/detail/null`}><Button variant="contained" color="secondary">Check Request</Button></Link>
     </div>
   )
 }

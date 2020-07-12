@@ -17,8 +17,8 @@ function App() {
       <Router>
         <h1><Link to="/">CUED</Link></h1>
         <Switch>
-          <Route path="/detail/:id" component={Detail} />
           <Route path="/request" component={Request} />
+          <Route path="/detail/:id/" component={Detail} />
           <Route path="/" component={Dashboard} />
         </Switch>
       </Router>

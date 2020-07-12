@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import shortId from 'shortid';
+import { useHistory } from 'react-router-dom';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -20,10 +21,12 @@ export default function Request() {
   const [allRequests, setAllRequests] = useState([]);
   const [open, setOpen] = useState(false);
 
+  const history = useHistory();
+
   useEffect(() => {
     const reqs = JSON.parse(localStorage.getItem('requests'));
-    setAllRequests({...request, reqId: shortId.generate()})
-    console.log(reqs);
+    setRequest({...request, reqId: shortId.generate()})
+    setAllRequests(reqs);
   }, [])
 
   const handleClick = () => setOpen(true);
@@ -39,6 +42,7 @@ export default function Request() {
     if(Object.values(request).filter(field => field.length < 1).length > 0) handleClick();
     else {
       localStorage.setItem('requests', JSON.stringify([...allRequests, request]))
+      history.push(`/detail/${request.reqId}`)
     }
   }
 
